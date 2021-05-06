@@ -1,26 +1,29 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:messaging_app/views/signUp.dart';
+import 'package:messaging_app/views/signin.dart';
 
-class DatabaseMethods {
-  Future<void> addUserInfo(userData) async {
-    Firestore.instance.collection("users").add(userData).catchError((e) {
-      print(e.toString());
+class Authenticate extends StatefulWidget {
+  Authenticate({Key key}) : super(key: key);
+
+  @override
+  _AuthenticateState createState() => _AuthenticateState();
+}
+
+class _AuthenticateState extends State<Authenticate> {
+  bool showSignIn = true;
+
+  void toggleView() {
+    setState(() {
+      showSignIn = !showSignIn;
     });
   }
 
-  etUserInfo(String email) async {
-    return Firestore.instance
-        .collection("users")
-        .where("userEmail", isEqualTo: email)
-        .getDocuments()
-        .catchError((e) {
-      print(e.toString());
-    });
-  }
-
-  searchByName(String searchField) {
-    return Firestore.instance
-        .collection("users")
-        .where('userName', isEqualTo: searchField)
-        .getDocuments();
+  @override
+  Widget build(BuildContext context) {
+    if (showSignIn) {
+      return SignIn(toggleView);
+    } else {
+      return SignUp(toggleView);
+    }
   }
 }
